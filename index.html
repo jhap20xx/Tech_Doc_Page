@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Technical Documentation Page</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<header>
+	<div>
+	<header id="subject">Network Security</header></div>
+	<div>
+	<nav id="navbar">
+		<ul>
+		<li><a  class="nav-link" href="#CourseIntroduction">Course Introduction</a></li>
+
+		<li><a  class="nav-link" href="#LANDesign">LAN Design</a></li>
+
+		<li><a  class="nav-link" href="#ScalingVLANs">Scaling VlANs</a></li>
+
+		<li><a  class="nav-link" href="#STP">STP</a></li>
+
+		<li><a  class="nav-link" href="#EtherChannelandHSRP">EtherChannel and HSRP</a></li>
+
+		<li><a  class="nav-link" href="#DynamicRouting">Dynamic Routing</a></li>
+
+		<li><a  class="nav-link" href="#EIGRP">EIGRP</a></li>
+		<li><a  class="nav-link" href="#EIGRP2">EIGRP Tuning and Troubleshooting</a></li>
+
+		<li><a  class="nav-link" href="#Single-AreaOSPF">Singel-Area OSPF</a></li>
+
+		<li><a  class="nav-link" href="#MultiareaOSPF">Multiarea OSPF</a></li>
+
+		<li><a  class="nav-link" href="#OSPF2">OSPF Tuning and Troubleshooting</a></li>
+	</ul>
+
+	</nav>
+</div>
+</header>
+<body>
+	<div>
+		<main id="main-doc">
+			
+			<section class="main-section" id="CourseIntroduction">
+				<header>Course Introduction</header>
+				<br>
+				<p>This chapter discusses strategies that can be used to systematically design a highly functional network, such as the hierarchical network design model and appropriate device selections. The goals of network design are to limit the number of devices impacted by the failure of a single network device, provide a plan and path for growth, and create a reliable network.</p>
+				<li></li>
+			</section>
+		
+		
+			<section class="main-section" id="LANDesign">
+				<header>LAN Design</header>
+				<br>
+				<p>The hierarchical network design model divides network functionality into the access layer, the distribution layer, and the core layer. The campus wired LAN enables communications between devices in a building or group of buildings, as well as interconnection to the WAN and internet edge at the network core.</p>
+				</br>
+				<li><p>Basic Router CLI commands</p></li>
+<pre><code>
+Router# configure terminal
+Router(config)# hostname R1
+R1(config)# enable secret class
+R1(config-line)line console 0
+R1(config-line)login
+R1(config-line)exec-timeout 0 0
+R1(config)#line vty 0 15
+R1(config-line)#password cisco
+R1(config-line)#login
+R1(config-line)#exit
+				</code></pre>
+				<li></li>
+			</section>
+			
+			<section class="main-section" id="ScalingVLANs">
+				<header>Scaling VLANs</header>
+				<p>VLAN Trunking Protocol (VTP) reduces administration of VLANs in a switched network. A switch configured as the VTP server distributes and synchronizes VLAN information over trunk links to VTP-enabled switches throughout the domain.</p>
+<pre><code>
+					<li><p>Configure VTP</p></li>
+S1# conft 
+S1(config)# vtp mode server
+S1(config)#vtp mode client
+S1(config)#vtp domain CCNA
+S1(config)#vtp password cisco
+S1(config)#end
+				</code></pre>
+				
+			</section>
+			
+			<section class="main-section" id="STP">
+				<header>STP</header>
+				
+				<p>STP sends BPDU frames for communication between switches. One switch is elected as the root bridge for each instance of spanning tree. An administrator can control this election by changing the bridge priority. Root bridges can be configured to enable spanning tree load balancing by VLAN or by a group of VLANs, depending on the spanning tree protocol used. STP then assigns a port role to each participating port using a path cost. The root path cost is equal to the sum of all the port costs along the path to the root bridge. A port cost is automatically assigned to each port; however, it can also be manually configured. Paths with the lowest cost become preferred, and all other redundant paths are blocked.</p></br>
+				<li><p>Spanning Tree Configuration</p></li>
+<pre><code>
+S1(config)#spanning-tree VLAN 1 root primary
+S1(config)#spanning-tree VLAN 1 priority 24576
+S1(config)#spaniing-tree VLAN 1 root secondary
+S1(config)#end
+</code></pre>
+				
+			</section>
+		
+			<section class="main-section" id="EtherChannelandHSRP">
+
+				<header>Ether Channel and HSRP</header>
+			
+				<p>EtherChannel aggregates multiple switched links together to load balance over redundant paths between two devices. All ports in one EtherChannel must have the same speed, duplex setting, and VLAN information on all interfaces on the devices at both ends. Settings configured in the port channel interface configuration mode will also be applied to the individual interfaces in that EtherChannel. Settings configured on individual interfaces will not be applied to the EtherChannel or to the other interfaces in the EtherChannel.</p>
+			</br>
+			<li><p>Configuring EtherChannel with LACP</p></li>
+				
+<pre><code>
+S1(config)#interface range Fastethernet0/-2
+S1(config-if-range)#channel-group1 mode active
+S1(config-if-range)#interface port-channel 1
+S1(config)#switchport mode trunk
+S1(config)#switchport trunk allowed vlan 1,2,20
+				
+	</code></pre>
+				
+			</section>
+			
+			<section class="main-section" id="DynamicRouting">
+				<header>Dynamic Routing</header>
+
+				<p>Dynamic routing protocols are used by routers to facilitate the exchange of routing information between routers. The purpose of dynamic routing protocols includes: discovery of remote networks, maintaining up-to-date routing information, choosing the best path to destination networks, and the ability to find a new best path if the current path is no longer available. While dynamic routing protocols require less administrative overhead than static routing, they do require dedicating part of a router’s resources for protocol operation, including CPU time and network link bandwidth.</p>
+			
+				<li><p>Dynamic Routing RIP, OSPF, EIGRP</p></li>
+<pre><code>
+Router (config) # router rip
+Router (config-router) # network (directly-connected-classful-network-address)
+
+Router (config) # router eigrp (AS number)
+Router (config) # network (network address) (wild-card mask)
+
+Router (config) # router ospf (process-id)
+Router (config) # network (network address) (wild-card mask)
+				</code><pre>
+				
+			</section>
+		
+			<section class="main-section" id="EIGRP">
+				<header>EIGRP</header>
+				<p>EIGRP (Enhanced Interior Gateway Routing Protocol) is a classless, distance vector routing protocol. EIGRP is an enhancement of another Cisco routing protocol, called IGRP (Interior Gateway Routing Protocol), which is now obsolete. EIGRP was initially released in 1992 as a Cisco proprietary protocol available only on Cisco devices. In 2013, Cisco released a basic functionality of EIGRP as an open standard, to the IETF.</p>
+				<br>
+				<li><p>Enabling EIGRP for IPv4 and IPv6 </p></li>
+<pre><code>
+R1(config)#router eigrp 1
+R1(config-router)eigrp router-id 1.1.1.1
+
+R1(config)#interface g0/0
+R1(config)#ipv6 eigrp 2
+
+</code></pre>
+				
+			</section>
+			
+			<section class="main-section" id="EIGRP2">
+				<header>EIGRP Tuning and Troubleshooting</header>
+				<p>EIGRP is one of the routing protocols commonly used in large enterprise networks. Modifying EIGRP features and troubleshooting problems is one of the most essential skills for a network engineer involved in the implementation and maintenance of large routed enterprise networks that use EIGRP.<br>Summarization decreases the number of entries in routing updates and lowers the number of entries in local routing tables. It also reduces bandwidth utilization for routing updates and results in faster routing table lookups. EIGRP for IPv4 automatic summarization is disabled by default beginning with Cisco IOS Release 15.0(1)M and 12.2(33). Prior to this, automatic summarization was enabled by default. To enable automatic summarization for EIGRP use the<code> auto-summary</code> command in router configuration mode. Use the <code>show ip protocols</code> command to verify the status of automatic summarization. Examine the routing table to verify that automatic summarization is working.
+				</p>
+				
+			
+			</section>
+			
+			<section class="main-section" id="Single-AreaOSPF">
+				<header>Single-Area OSPF</header>
+				<p>Open Shortest Path First (OSPF) is a link-state routing protocol that was developed as an alternative for the distance vector routing protocol, RIP. RIP was an acceptable routing protocol in the early days of networking and the Internet. However, RIP's reliance on hop count as the only metric for determining best route quickly became problematic. Using hop count does not scale well in larger networks with multiple paths of varying speeds. OSPF has significant advantages over RIP in that it offers faster convergence and scales to much larger network implementations.
+
+				SPF is a classless routing protocol that uses the concept of areas for scalability. This chapter covers basic, single-area OSPF implementations and configurations.</p><br>
+				
+<pre><code>
+R1(config)#router ospf 10
+R1(config-router)# network 172.16.1.0 0.0.0.255 area 0
+R1(config-router)# network 172.16.3.0 0.0.0.3 area 0
+R1(config-router)# network 172.16.10.4 0.0.0.3 area 0
+
+</code></pre>
+				
+			</section>
+			
+			<section class="main-section" id="MultiareaOSPF">
+				<header>Multiarea OSPF</header>
+				<p>Multiarea OSPF is used to divide a large OSPF network. Too many routers in one area increase the load on the CPU and create a large link-state database. In this chapter, directions are provided to effectively partition a large single area into multiple areas. Area 0, used in a single-area OSPF, is known as the backbone area.</p><br>
+				<h3>OSPF Implementation</h3><br>
+				<p>Gather the network requirements and parameters </p>
+				<p>Define the OSPF parameters</p>
+				<p>Configure the multiarea OSPF implementation based on the parameters.</p>
+				<p>Verify the multiarea OSPF implementation based on the parameters.</p>
+				<li><p>Verify Multiarea OSPF</p></li>
+		<pre><code>
+			<li>show ip protocols</li>
+			<li>show ip ospf interface brief</li>
+		</code></pre>
+	
+			</section>
+			
+			<section class="main-section" id="OSPF2">
+				<header>OSPF Tuning and Troubleshooting</header>
+				<p>OSPF defines five network types: point-to-point, broadcast multiaccess, nonbroadcast multiaccess, point-to-multipoint, and virtual links.
+
+				Multiaccess networks can create two challenges for OSPF regarding the flooding of LSAs: creation of multiple adjacencies and extensive flooding of LSAs. The solution to managing the number of adjacencies and the flooding of LSAs on a multiaccess network is the DR and BDR. If the DR stops producing Hellos, the BDR promotes itself and assumes the role of DR.</p><br>
+				<li><p>Modifying OSPF Intervals</p></li>
+	<pre><code>
+		R1(config)# interface serial 0/0/0
+		R1(config)# ip ospf hello-interval 5
+		R1(config)# ip ospf dead-interval 20
+		R1(config)#end
+	</code></pre>
+			
+			</section>
+	</main>
+	</div>
+</body>
+</html>
